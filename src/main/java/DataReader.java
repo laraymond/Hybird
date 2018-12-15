@@ -1,8 +1,8 @@
 import model.IMU;
 import model.PtCloud;
 import org.apache.commons.math3.complex.Quaternion;
+import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import util.EveryNth;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 
 public class DataReader {
 
@@ -23,15 +24,14 @@ public class DataReader {
         File firstFile = new File(classLoader.getResource(imuFileName).getFile());
         File secondFile = new File(classLoader.getResource(ptcloudFileName).getFile());
 
-        Stream<String> imuFile = Files.lines(firstFile.toPath());
-        Stream<String> ptcloudFile = Files.lines(secondFile.toPath());
-        //Stream<String> secondFile = Files.lines(Paths.get(secondFilePath));
+        Stream<IMU> imuStream = Files.lines(firstFile.toPath())
+                .map(this::toIMU);
 
-        imuFile.map(this::toIMU)
-                .forEach(System.out::println);
-        System.out.println("...........");
-        ptcloudFile.map(this::toPtCloud)
-                .forEach(System.out::println);
+        Stream<PtCloud> ptCloudStream = Files.lines(secondFile.toPath())
+                .map(this::toPtCloud);
+
+        //StreamUtils.zip(imuFile, ptcloudFile, this::transform)
+        //  .count();
 
     }
 
@@ -63,8 +63,26 @@ public class DataReader {
                 vector.add(pt);
             }
         }
-        return new PtCloud(vector, time);
 
+        return new PtCloud(vector, time);
+    }
+
+    private PtCloud transform(IMU imu, PtCloud ptcloud) {
+        long diff = imu.getEpochTime() - ptcloud.getEpochTime();
+        //System.out.println(diff / 1000000);
+
+        Rotation rotQ = new Rotation(
+                imu.getQuaternion().getQ0(),
+                imu.getQuaternion().getQ1(),
+                imu.getQuaternion().getQ2(),
+                imu.getQuaternion().getQ3(),
+                true
+        );
+        List<Vector3D> rotated = ptcloud.getVector3D().stream()
+                .map(rotQ::applyTo)
+                .collect(Collectors.toList());
+
+        return new PtCloud(rotated, ptcloud.getEpochTime());
     }
 
 }

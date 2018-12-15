@@ -2,6 +2,8 @@ package model;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -14,9 +16,21 @@ public class PtCloud {
         this.epochTime = epochTime;
     }
 
+    public List<Vector3D> getVector3D() {
+        return vector3d;
+    }
+
+    public long getEpochTime() {
+        return epochTime;
+    }
+
     @Override
     public String toString() {
-        return "" + epochTime + " " + vector3d.subList(vector3d.size()-12,vector3d.size()).toString();
+        Date date = new Date(epochTime / 1000000);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:MM:ss:SS");
+        //sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String formattedDate = sdf.format(date);
+        return "" + formattedDate;
     }
 }
 
