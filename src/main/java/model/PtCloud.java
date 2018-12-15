@@ -32,5 +32,21 @@ public class PtCloud {
         String formattedDate = sdf.format(date);
         return "" + formattedDate;
     }
+
+    public String toLine() {
+        StringBuilder result = new StringBuilder();
+        result.append(getEpochTime());
+        result.append(" ");
+        for (int i = 0; i < getVector3D().size(); i++) {
+            Vector3D v = getVector3D().get(i);
+            result.append(v.getX());
+            result.append(" ");
+            result.append(v.getY());
+            result.append(" ");
+            result.append(v.getZ());
+
+        }
+        return result.toString();
+    }
 }
 
