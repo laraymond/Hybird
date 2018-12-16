@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 public class DataReader {
 
+    private static final double TIME_BOUNDARY = 50 * 1e6;
+
     public void read(
             String imuFileName,
             String ptcloudFileName
@@ -28,11 +30,20 @@ public class DataReader {
         while (ptCloudLine != null) {
             PtCloud currentPtCloud = toPtCloud(ptCloudLine);
             long ptCloudTime = currentPtCloud.getEpochTime();
-            IMU targetIMU = findMatchingImuLine(imuReader, ptCloudTime);
-            ptCloudLine = ptCloudReader.readLine();
-            PtCloud transformedPtCloud = transform(targetIMU, currentPtCloud);
 
-            writer.println(transformedPtCloud.toLine());
+            IMU targetIMU = findMatchingImuLine(imuReader, ptCloudTime);
+
+            if (targetIMU != null) {
+                Long timeDiff = timediff(targetIMU.getEpochTime(), currentPtCloud.getEpochTime());
+                System.out.println("point cloud match " + timeDiff);
+                PtCloud transformedPtCloud = transform(targetIMU, currentPtCloud);
+                writer.println(transformedPtCloud.toLine());
+            } else {
+                System.out.println("point cloud rejected");
+            }
+
+            ptCloudLine = ptCloudReader.readLine();
+
 
         }
         writer.close();
@@ -50,8 +61,11 @@ public class DataReader {
             next = imuReader.readLine();
             long nextIMUTime = toIMU(next).getEpochTime();
             long currentIMUTime = toIMU(line).getEpochTime();
+
             if (nextIMUTime > ptCloudTime) {
-                if (timediff(nextIMUTime, ptCloudTime) > timediff(currentIMUTime, ptCloudTime)) {
+                if (currentIMUTime < ptCloudTime - TIME_BOUNDARY && nextIMUTime > ptCloudTime + TIME_BOUNDARY) {
+                    return null;
+                } else if (timediff(nextIMUTime, ptCloudTime) > timediff(currentIMUTime, ptCloudTime)) {
                     return toIMU(line);
                 } else {
                     return toIMU(next);
