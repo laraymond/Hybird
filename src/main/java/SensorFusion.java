@@ -64,7 +64,7 @@ class SensorFusion {
 
     private PrintWriter getPrintWriter() throws FileNotFoundException, UnsupportedEncodingException {
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd-HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
         String formattedTime = sdf.format(date);
         return new PrintWriter("ptcloud-rotated-" + formattedTime + ".txt", "UTF-8");
     }
