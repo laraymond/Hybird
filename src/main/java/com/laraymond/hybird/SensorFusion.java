@@ -1,5 +1,7 @@
-import model.IMU;
-import model.PtCloud;
+package com.laraymond.hybird;
+
+import com.laraymond.hybird.model.IMU;
+import com.laraymond.hybird.model.PtCloud;
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
@@ -9,8 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static model.ModelMapper.toIMU;
-import static model.ModelMapper.toPtCloud;
+import static com.laraymond.hybird.model.ModelMapper.toIMU;
+import static com.laraymond.hybird.model.ModelMapper.toPtCloud;
 
 
 class SensorFusion {

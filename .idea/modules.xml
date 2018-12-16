@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sensor.iml" filepath="$PROJECT_DIR$/.idea/modules/sensor.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sensor_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sensor_main.iml" group="sensor" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sensor_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sensor_test.iml" group="sensor" />
     </modules>
   </component>
 </project>

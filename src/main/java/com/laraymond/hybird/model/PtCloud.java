@@ -1,4 +1,4 @@
-package model;
+package com.laraymond.hybird.model;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
