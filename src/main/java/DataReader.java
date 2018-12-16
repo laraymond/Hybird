@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class DataReader {
 
     private static final double TIME_BOUNDARY = 50 * 1e6;
+    private String lastIMU = null;
 
     public void read(
             String imuFileName,
@@ -56,18 +57,27 @@ public class DataReader {
                 this.getClass().getResourceAsStream("/" + ptcloudFileName)));
     }
 
+    /**
+     * @param imuReader
+     * @param ptCloudTime
+     * @return a matching point, or null, if no match found.
+     * @throws IOException
+     */
     private IMU findMatchingImuLine(BufferedReader imuReader, long ptCloudTime) throws IOException {
-        for (String next, line = imuReader.readLine(); line != null; line = next) {
+        for (String next, line = lastIMU == null ? imuReader.readLine() : lastIMU; line != null; line = next) {
             next = imuReader.readLine();
             long nextIMUTime = toIMU(next).getEpochTime();
             long currentIMUTime = toIMU(line).getEpochTime();
 
             if (nextIMUTime > ptCloudTime) {
                 if (currentIMUTime < ptCloudTime - TIME_BOUNDARY && nextIMUTime > ptCloudTime + TIME_BOUNDARY) {
+                    lastIMU = next;
                     return null;
                 } else if (timediff(nextIMUTime, ptCloudTime) > timediff(currentIMUTime, ptCloudTime)) {
+                    lastIMU = next;
                     return toIMU(line);
                 } else {
+                    lastIMU = null;
                     return toIMU(next);
                 }
             }
