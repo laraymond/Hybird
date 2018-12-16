@@ -8,4 +8,6 @@ the JAR will look for the 'points_file.xyz' and 'imu.wxyz' and generate a file r
 
 The output will be saved in a file named 'ptcloud-rotated-yyyy-mm-dd-HH:mm:ss'
 
+(There´s already a rotated result in the root folder).
+
 
