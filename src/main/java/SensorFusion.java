@@ -69,9 +69,8 @@ class SensorFusion {
         return new PrintWriter("ptcloud-rotated-" + formattedTime + ".txt", "UTF-8");
     }
 
-    private BufferedReader getBufferedReader(String ptcloudFileName) {
-        return new BufferedReader(new InputStreamReader(
-                this.getClass().getResourceAsStream("/" + ptcloudFileName)));
+    private BufferedReader getBufferedReader(String filePath) throws FileNotFoundException {
+        return new BufferedReader(new FileReader(filePath));
     }
 
     /**
