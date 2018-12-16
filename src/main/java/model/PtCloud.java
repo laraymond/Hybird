@@ -28,7 +28,6 @@ public class PtCloud {
     public String toString() {
         Date date = new Date(epochTime / 1000000);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:MM:ss:SS");
-        //sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String formattedDate = sdf.format(date);
         return "" + formattedDate;
     }
@@ -44,7 +43,7 @@ public class PtCloud {
             result.append(v.getY());
             result.append(" ");
             result.append(v.getZ());
-
+            result.append(" ");
         }
         return result.toString();
     }
