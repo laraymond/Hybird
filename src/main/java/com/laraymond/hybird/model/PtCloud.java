@@ -34,8 +34,30 @@ public class PtCloud {
 
     public String toLine() {
         StringBuilder result = new StringBuilder();
-        result.append(getEpochTime());
-        result.append(" ");
+        result.append("Version 0.7");
+        result.append("\n");
+        result.append("FIELDS x y z rgb");
+        result.append("\n");
+        result.append("SIZE 4 4 4 4");
+        result.append("\n");
+        result.append("TYPE F F F F");
+        result.append("\n");
+        result.append("COUNT 1 1 1 1");
+        result.append("\n");
+        result.append("WIDTH 1");
+        result.append("\n");
+        result.append("HEIGHT ").append(getVector3D().size());
+        result.append("\n");
+        result.append("VIEWPOINT 0 0 0 1 0 0 0");
+        result.append("\n");
+        result.append("POINTS ").append(getVector3D().size());
+        result.append("\n");
+        result.append("ATA ascii");
+        result.append("\n");
+
+
+        //result.append(getEpochTime());
+        //result.append(" ");
         for (int i = 0; i < getVector3D().size(); i++) {
             Vector3D v = getVector3D().get(i);
             result.append(v.getX());
@@ -43,7 +65,7 @@ public class PtCloud {
             result.append(v.getY());
             result.append(" ");
             result.append(v.getZ());
-            result.append(" ");
+            result.append("\n");
         }
         return result.toString();
     }

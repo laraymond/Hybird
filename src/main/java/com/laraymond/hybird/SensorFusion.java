@@ -20,6 +20,7 @@ class SensorFusion {
     private static final double TIME_BOUNDARY = 50 * 1e6;
     private String lastIMU = null;
 
+
     /**
      * Given two source files representing the readings of a set of PtClouds and IMUs, generates a file result of
      * the fusion between the two sensors synchronized.
@@ -34,12 +35,12 @@ class SensorFusion {
             String imuFilePath,
             String ptcloudFilePath
     ) throws IOException {
-
+        int frameCounter = 1;
         BufferedReader ptCloudReader = getBufferedReader(ptcloudFilePath);
         BufferedReader imuReader = getBufferedReader(imuFilePath);
-        PrintWriter writer = getPrintWriter();
-        String ptCloudLine = ptCloudReader.readLine();
+        Date date = new Date();
 
+        String ptCloudLine = ptCloudReader.readLine();
         while (ptCloudLine != null) {
             PtCloud currentPtCloud = toPtCloud(ptCloudLine);
             long ptCloudTime = currentPtCloud.getEpochTime();
@@ -47,11 +48,13 @@ class SensorFusion {
             IMU targetIMU = findMatchingImuLine(imuReader, ptCloudTime);
 
             if (targetIMU != null) {
+                PrintWriter writer = getPrintWriter(date, frameCounter);
                 Long timeDiff = timeDiff(targetIMU.getEpochTime(), currentPtCloud.getEpochTime());
                 System.out.println("point cloud match " + timeDiff);
                 PtCloud transformedPtCloud = rotatePoint(targetIMU, currentPtCloud);
-
                 writer.println(transformedPtCloud.toLine());
+                writer.close();
+                frameCounter++;
             } else {
                 System.out.println("point cloud rejected");
             }
@@ -60,16 +63,15 @@ class SensorFusion {
 
 
         }
-        writer.close();
+
         ptCloudReader.close();
         imuReader.close();
     }
 
-    private PrintWriter getPrintWriter() throws FileNotFoundException, UnsupportedEncodingException {
-        Date date = new Date();
+    private PrintWriter getPrintWriter(Date date, int frame) throws FileNotFoundException, UnsupportedEncodingException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
         String formattedTime = sdf.format(date);
-        return new PrintWriter("ptcloud-rotated-" + formattedTime + ".txt", "UTF-8");
+        return new PrintWriter("ptcloud-rotated-" + formattedTime + "frame-" + frame + ".pcd", "UTF-8");
     }
 
     private BufferedReader getBufferedReader(String filePath) throws FileNotFoundException {

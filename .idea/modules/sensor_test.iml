@@ -11,6 +11,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="sensor_main" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-math3:3.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-vulkan:3.2.1" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-opengl:3.2.1" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-glfw:3.2.1" level="project" />
     <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl:3.2.1" level="project" />
