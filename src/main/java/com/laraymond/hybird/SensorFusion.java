@@ -50,6 +50,7 @@ class SensorFusion {
                 Long timeDiff = timeDiff(targetIMU.getEpochTime(), currentPtCloud.getEpochTime());
                 System.out.println("point cloud match " + timeDiff);
                 PtCloud transformedPtCloud = rotatePoint(targetIMU, currentPtCloud);
+
                 writer.println(transformedPtCloud.toLine());
             } else {
                 System.out.println("point cloud rejected");
