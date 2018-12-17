@@ -34,7 +34,7 @@ public class PtCloud {
 
     public String toLine() {
         StringBuilder result = new StringBuilder();
-        result.append("Version 0.7");
+        /*result.append("Version 0.7");
         result.append("\n");
         result.append("FIELDS x y z rgb");
         result.append("\n");
@@ -53,7 +53,7 @@ public class PtCloud {
         result.append("POINTS ").append(getVector3D().size());
         result.append("\n");
         result.append("ATA ascii");
-        result.append("\n");
+        result.append("\n");*/
 
 
         //result.append(getEpochTime());
