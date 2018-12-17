@@ -65,7 +65,7 @@ public class PtCloud {
             result.append(v.getY());
             result.append(" ");
             result.append(v.getZ());
-            result.append("\n");
+            result.append(" ");
         }
         return result.toString();
     }
