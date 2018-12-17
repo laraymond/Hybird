@@ -34,8 +34,8 @@ public class PtCloud {
 
     public String toLine() {
         StringBuilder result = new StringBuilder();
-        //result.append(getEpochTime());
-        //result.append(" ");
+        result.append(getEpochTime());
+        result.append(" ");
         for (int i = 0; i < getVector3D().size(); i++) {
             Vector3D v = getVector3D().get(i);
             result.append(v.getX());
